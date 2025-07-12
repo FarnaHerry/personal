@@ -1,0 +1,21 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>我的博客</title>
+    <style>
+        body{max-width:720px;margin:0 auto;font-family:sans-serif}
+        h2 a{color:#0366d6;text-decoration:none}
+    </style>
+</head>
+
+
+
+<body>
+<?php foreach($list as $a): ?>
+    <h2><a href="/blog/article/<?=$a['id']?>"><?=$a['title']?></a></h2>
+    <p><?=$a['created_at']?></p>
+<?php endforeach; ?>
+{$list|raw}
+</body>
+</html>
