@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<?php foreach($files as $f): ?>
+<p>
+    <a href="<?= $f['path'] ?>" target="_blank"><?= $f['name'] ?></a>
+    (<?= round($f['size']/1024, 2) ?> KB)
+</p>
+<?php endforeach; ?>
+</body>
+</html>

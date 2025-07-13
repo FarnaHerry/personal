@@ -9,6 +9,8 @@
 // | Author: liu21st <liu21st@gmail.com>
 // +----------------------------------------------------------------------
 use think\facade\Route;
+Route::get('/', 'article/index');
+Route::get('/article/<id>', 'article/read');
 
-Route::get('/', 'Article/index');
-Route::get('/article/<id>', 'Article/read');
+
+

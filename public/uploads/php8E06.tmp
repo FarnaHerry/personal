@@ -1,0 +1,21 @@
+宝塔面板
+	
+	用户名: work
+	新密码: 123456
+	面板端口：666
+	安全入口/666666
+
+	https://192.168.31.201:666/home
+
+
+
+ftp	192.168.31.201 	root 		Ruijie@123
+
+
+
+
+mount -o anon \\192.168.31.201\nfs_share Z:
+
+存储空间200G
+
+mount -o anon \\192.168.31.201\home\dev-srv\nfs_share Y:

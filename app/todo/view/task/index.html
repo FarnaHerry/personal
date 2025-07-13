@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="zh">
+<head>
+    <meta charset="utf-8">
+    <title>Todo & Pomodoro</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/sortablejs@latest/Sortable.min.js"></script>
+</head>
+<body class="p-4">
+<h3>任务清单 + 番茄钟</h3>
+
+<!-- 新建 -->
+<form class="row g-2 mb-3" id="addForm">
+    <div class="col"><input class="form-control" name="title" placeholder="任务标题" required></div>
+    <div class="col-auto"><button class="btn btn-primary">添加</button></div>
+</form>
+
+<!-- 列表 -->
+<ul id="taskList" class="list-group">
+    {volist name="list" id="t"}
+        <li class="list-group-item d-flex justify-content-between align-items-center" data-id="{$t.id}">
+            <div>
+                <input class="form-check-input me-2" type="checkbox" {$t.status?'checked':''} onchange="toggle({$t.id})">
+                <span>{$t.title}</span>
+            </div>
+            <div>
+                <button class="btn btn-sm btn-outline-success" onclick="pomodoro({$t.id})">🍅 {$t.pomodoro}</button>
+                <button class="btn btn-sm btn-outline-danger" onclick="del({$t.id})">×</button>
+            </div>
+        </li>
+    {/volist}
+</ul>
+
+<script>
+    /* 添加 */
+    document.getElementById('addForm').addEventListener('submit', async e=>{
+        e.preventDefault();
+        await fetch('/todo/task', {
+            method:'POST',
+            headers:{'Content-Type':'application/json'},
+            body: JSON.stringify({title:e.target.title.value})
+        });
+        location.reload();
+    });
+
+    /* 完成/撤销 */
+    async function toggle(id){
+        await fetch('/todo/task/'+id, {method:'PUT'});
+        location.reload();
+    }
+
+    /* 番茄钟+1 */
+    async function pomodoro(id){
+        await fetch('/todo/task/'+id+'/pomodoro', {method:'PUT'});
+        location.reload();
+    }
+
+    /* 删除 */
+    async function del(id){
+        await fetch('/todo/task/'+id, {method:'DELETE'});
+        location.reload();
+    }
+
+    /* 拖拽排序 */
+    new Sortable(document.getElementById('taskList'), {
+        animation:150,
+        onEnd:async e=>{
+            const ids = [...e.to.children].map(li=>li.dataset.id);
+            await fetch('/todo/task/sort', {
+                method:'POST',
+                headers:{'Content-Type':'application/json'},
+                body: JSON.stringify({ids})
+            });
+        }
+    });
+</script>
+</body>
+</html>

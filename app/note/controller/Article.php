@@ -1,15 +1,15 @@
 <?php
 
-namespace app\blog\controller;
+namespace app\note\controller;
 
 use app\BaseController;
-use app\blog\model\Article as ArticleModel;
+use app\note\model\Article as ArticleModel;
 use think\facade\Cache;
 class Article extends BaseController
 {
     public function index()  {
         $page = (int)input('page', 1);
-        $key  = "blog_list_$page";
+        $key  = "note_list_$page";
         $html = Cache::store('redis')->get($key);
 
         if (!$html) {
@@ -26,4 +26,3 @@ class Article extends BaseController
     }
 
 }
-
